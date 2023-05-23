@@ -1,0 +1,34 @@
+# Mengatur versi Docker compose yang digunakan yaitu 3.7
+version: "3.7"
+
+# Mendefinisikan service yang diperlukan untuk menjalankan aplikasi
+# Terdapat dua service yaitu item-app dan item-db
+services:
+  # Mendefinisikan service item-app
+  item-app:
+    # Menggunakan image item-app:v1 dari GitHub Packages
+    image: ghcr.io/iputuhariyadi/item-app:v1
+    # Mengatur ketergantungan antar service yakni
+    # agar item-app hanya berjalan setelah item-db diluncurkan
+    depends_on:
+      - item-db
+    # Mengatur restart policy agar container melakukan restart saat terhenti
+    restart: always
+    # Mengatur pemetaan port container 8080 agar dapat diakses dari port 80 di host
+    ports:
+      - 80:8080
+
+  # Mendefinisikan service item-db
+  item-db:
+    # Menggunakan image mongo:3 dari Docker Hub
+    image: mongo:3
+    # Mengatur restart policy agar container melakukan restart saat terhenti
+    restart: always
+    # Menggunakan volume app-db yang didefinisikan pada bagian volumes
+    # dan memasangnya ke direktori /data/db di container
+    volumes:
+      - app-db:/data/db
+
+# Membuat volume baru bernama app-db
+volumes:
+  app-db:

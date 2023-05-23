@@ -1,0 +1,27 @@
+putu@vlab:~/project/a433-microservices$ docker compose up -d
+[+] Running 14/14
+ ⠿ item-db Pulled                                                                                                                       47.0s
+   ⠿ 92473f7ef455 Pull complete                                                                                                         12.5s
+   ⠿ fb52bde70123 Pull complete                                                                                                         12.6s
+   ⠿ 64788f86be3f Pull complete                                                                                                         12.6s
+   ⠿ 33f6d5f2e001 Pull complete                                                                                                         12.7s
+   ⠿ 570e56656608 Pull complete                                                                                                         13.1s
+   ⠿ f518a872ab12 Pull complete                                                                                                         13.4s
+   ⠿ c9bdae151f64 Pull complete                                                                                                         13.5s
+   ⠿ b2c58da5f563 Pull complete                                                                                                         13.6s
+   ⠿ 2928038a6053 Pull complete                                                                                                         13.6s
+   ⠿ 29a16c1b79ab Pull complete                                                                                                         13.7s
+   ⠿ efec0f86077c Pull complete                                                                                                         38.8s
+   ⠿ 261a04726d31 Pull complete                                                                                                         38.9s
+   ⠿ 7c4062426e72 Pull complete                                                                                                         39.0s
+[+] Running 4/4
+ ⠿ Network a433-microservices_default       Created                                                                                      0.1s
+ ⠿ Volume "a433-microservices_app-db"       Created                                                                                      0.0s
+ ⠿ Container a433-microservices-item-db-1   Started                                                                                      1.7s
+ ⠿ Container a433-microservices-item-app-1  Started                                                                                      2.0s
+putu@vlab:~/project/a433-microservices$ docker compose down --volumes
+[+] Running 4/4
+ ⠿ Container a433-microservices-item-app-1  Removed                                                                                      0.3s
+ ⠿ Container a433-microservices-item-db-1   Removed                                                                                      0.3s
+ ⠿ Volume a433-microservices_app-db         Removed                                                                                      0.0s
+ ⠿ Network a433-microservices_default       Removed                                                                                      0.1s
