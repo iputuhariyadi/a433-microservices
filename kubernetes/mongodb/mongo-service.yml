@@ -1,0 +1,18 @@
+# Mengatur versi Kubernetes API yang digunakan untuk membuat object dari manifest yaitu v1
+apiVersion: v1
+# Mengatur jenis object yang dibuat yaitu Service
+kind: Service
+# Mengatur nama dari object service yang dibuat yaitu mongo-service
+# dan label untuk mengorganisasi object yaitu key app dengan value mongo
+metadata:
+  name: mongo-service
+  labels:
+    app: mongo
+# Mengatur spesifikasi dari object meliputi port yang diekspos adalah 27017,
+# menggunakan selector app: mongo dan tier mongodb
+spec:
+  ports:
+    - port: 27017
+  selector:
+    app: mongo
+    tier: mongodb

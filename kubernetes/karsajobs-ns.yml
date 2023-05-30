@@ -1,0 +1,10 @@
+# Mengatur versi Kubernetes API yang digunakan untuk membuat object dari manifest yaitu v1
+apiVersion: v1
+# Mengatur jenis object yang dibuat yaitu Namespace
+kind: Namespace
+# Mengatur nama dari object Namespace yang dibuat yaitu karsajobs
+# dan label untuk mengorganisasi object yaitu key app dengan value karsajobs
+metadata:
+  name: karsajobs
+  labels:
+    app: karsajobs

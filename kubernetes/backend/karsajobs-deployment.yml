@@ -1,0 +1,58 @@
+# Mengatur versi Kubernetes API yang digunakan untuk membuat object dari manifest yaitu apps/v1
+apiVersion: apps/v1
+# Mengatur jenis object yang dibuat yaitu Deployment
+kind: Deployment
+# Mengatur nama dari object Deployment yang dibuat yaitu karsajobs-deployment
+# dan label untuk mengorganisasi object yaitu key app dengan value karsajobs
+# serta key tier dengan value backend
+metadata:
+  name: karsajobs-deployment
+  labels:
+    app: karsajobs
+    tier: backend
+# Mengatur spesifikasi dari object
+spec:
+  # Menentukan jumlah replica dari Pod yaitu 1
+  replicas: 1
+  # Menggunakan selector untuk mengidentifikasi Pod dengan label tier: backend
+  selector:
+    matchLabels:
+      tier: backend
+  # Pod template terdiri dari 2 bagian yaitu metadata dan spec (spesifikasi dari container)
+  template:
+    # Bagian metadata memuat label untuk mengorganisasi object yaitu
+    # key app dengan value karsajobs dan key tier dengan value backend
+    # yang menjadi bagian dari Service dan Deployment
+    metadata:
+      labels:
+        app: karsajobs
+        tier: backend
+    # Bagian spec memuat spesifikasi resource container di dalam Pod
+    spec:
+      containers:
+      # Mengatur nama dari container yaitu karsajobs
+      - name: karsajobs
+        # Mengatur image yang digunakan yaitu karsajobs:latest yang bersumber dari GitHub Packages
+        image: ghcr.io/iputuhariyadi/karsajobs:latest
+        # Menentukan port yang digunakan yaitu 8080
+        ports:
+          - containerPort: 8080
+        # Mengatur environment variable meliputi APP_PORT bernilai 8080,
+        # MONGO_HOST bernilai mongo-service yang diambil dari MongoDB Service,
+        # MONGO_USER dengan nilai yang diambil dari key MONGO_ROOT_USERNAME pada MongoDB Secret dan
+        # MONGO_ROOT_PASS dengan nilai yang diambil dari key MONGO_ROOT_PASSWORD pada MongoDB Secret  
+        env:
+          - name: APP_PORT
+            value: "8080"
+          - name: MONGO_HOST
+            value: mongo-service            
+          - name: MONGO_USER
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: MONGO_ROOT_USERNAME            
+          - name: MONGO_PASS
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: MONGO_ROOT_PASSWORD

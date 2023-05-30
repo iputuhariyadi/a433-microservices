@@ -1,0 +1,13 @@
+# Mengatur versi Kubernetes API yang digunakan untuk membuat object dari manifest yaitu v1
+apiVersion: v1
+# Mengatur jenis object yang dibuat yaitu ConfigMap
+kind: ConfigMap
+# Mengatur nama dari object ConfigMap yang dibuat yaitu mongo-config
+metadata:
+  name: mongo-config
+# Memperlakukan data sebagai file mongo.conf yang memiliki properti
+# storage dengan key dbPath bernilai /data/db 
+data:
+  mongo.conf: |
+    storage:
+      dbPath: /data/db

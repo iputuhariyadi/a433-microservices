@@ -1,0 +1,19 @@
+# Mengatur versi Kubernetes API yang digunakan untuk membuat object dari manifest yaitu v1
+apiVersion: v1
+# Mengatur jenis object yang dibuat yaitu Service
+kind: Service
+# Mengatur nama dari object service yang dibuat yaitu karsajobs-service
+# dan label untuk mengorganisasi object yaitu key app dengan value karsajobs
+metadata:
+  labels:
+    app: karsajobs
+  name: karsajobs-service
+# Mengatur spesifikasi dari object meliputi port yang diekspos adalah 8080,
+# menggunakan selector app: karsajobs dan tier backend serta memakai tipe NodePort
+spec:
+  ports:
+  - port: 8080
+  selector:
+    app: karsajobs
+    tier: backend
+  type: NodePort

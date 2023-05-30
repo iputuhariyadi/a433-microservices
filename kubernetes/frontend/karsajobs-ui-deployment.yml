@@ -1,0 +1,39 @@
+# Mengatur versi Kubernetes API yang digunakan untuk membuat object dari manifest yaitu apps/v1
+apiVersion: apps/v1
+# Mengatur jenis object yang dibuat yaitu Deployment
+kind: Deployment
+# Mengatur nama dari object Deployment yang dibuat yaitu karsajobs-ui-deployment
+# dan label untuk mengorganisasi object yaitu key app dengan value karsajobs
+# serta key tier dengan value frontend
+metadata:
+  name: karsajobs-ui-deployment
+  labels:
+    app: karsajobs
+    tier: frontend
+# Mengatur spesifikasi dari object
+spec:
+  # Menentukan jumlah replica dari Pod yaitu 1
+  replicas: 1
+  # Menggunakan selector untuk mengidentifikasi Pod dengan label tier: frontend
+  selector:
+    matchLabels:
+      tier: frontend
+  # Pod template terdiri dari 2 bagian yaitu metadata dan spec (spesifikasi dari container)
+  template:
+    # Bagian metadata memuat label untuk mengorganisasi object yaitu
+    # key app dengan value karsajobs dan key tier dengan value frontend
+    # yang menjadi bagian dari Service dan Deployment  
+    metadata:
+      labels:
+        app: karsajobs
+        tier: frontend
+    # Bagian spec memuat spesifikasi resource container di dalam Pod
+    spec:
+      # Mengatur nama dari container yaitu karsajobs-ui
+      containers:
+      - name: karsajobs-ui
+        # Mengatur image yang digunakan yaitu karsajobs-ui:latest yang bersumber dari GitHub Packages
+        image: ghcr.io/iputuhariyadi/karsajobs-ui:latest
+        # Menentukan port yang digunakan yaitu 8000
+        ports:
+          - containerPort: 8000

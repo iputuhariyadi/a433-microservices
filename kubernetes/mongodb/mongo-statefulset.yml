@@ -1,0 +1,68 @@
+# Mengatur versi Kubernetes API yang digunakan untuk membuat object dari manifest yaitu apps/v1
+apiVersion: apps/v1
+# Mengatur jenis object yang dibuat yaitu StatefulSet
+kind: StatefulSet
+# Mengatur nama dari object StatefulSet yang dibuat yaitu mongo
+# dan label untuk mengorganisasi object yaitu key app dengan value mongo
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+# Mengatur spesifikasi dari object meliputi:
+# menggunakan selector app: mongo dan tier mongodb
+spec:
+  selector:
+    matchLabels:
+      app: mongo
+      tier: mongodb
+  # Mengatur nama service yaitu mongo-service
+  serviceName: mongo-service
+  # Menentukan jumlah replica dari Pod yaitu 1
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: mongo
+        tier: mongodb
+    # Bagian spec memuat spesifikasi resource container di dalam Pod
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      # Mengatur nama dari container yaitu mongo dan image yang digunakan yaitu mongo
+      - image: mongo
+        name: mongo
+        # Mengatur environment variable meliputi
+        # MONGO_INITDB_ROOT_USERNAME_FILE dan MONGO_INITDB_ROOT_PASSWORD_FILE
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME_FILE
+          value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
+        - name: MONGO_INITDB_ROOT_PASSWORD_FILE
+          value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
+        # Mengatur port yang digunakan yaitu 27017
+        ports:
+        - containerPort: 27017
+          name: mongo
+        # Mengatur Volume Mount meliputi:
+        # Persistent Volume dengan mount path /data/db,
+        volumeMounts:
+        - name: mongo-persistent-volume
+          mountPath: /data/db
+          # ConfigMap dengan mount path /config dan
+        - name: mongo-config
+          mountPath: /config
+          # Secret dengan mount path /etc/mongo-credentials
+        - name: mongo-secret
+          mountPath: /etc/mongo-credentials
+      # Mengatur volumes meliputi nama dari Mongo Persistent Volume
+      # dan ConfigMap serta Secret
+      volumes:
+      - name: mongo-persistent-volume
+        persistentVolumeClaim:
+          claimName: mongo-pv-claim
+      - name: mongo-config
+        configMap:
+          name: mongo-config
+      - name: mongo-secret
+        secret:
+          secretName: mongo-secret
