@@ -1,0 +1,37 @@
+# Mengatur versi Kubernetes API yang digunakan untuk membuat object dari manifest yaitu apps/v1
+apiVersion: apps/v1
+# Mengatur jenis object yang dibuat yaitu Deployment
+kind: Deployment
+# Mengatur nama dari object Deployment yang dibuat yaitu shipping-service-deployment
+# dan label untuk mengorganisasi object yaitu key app dengan value e-commerce
+metadata:
+  name: shipping-service-deployment
+  labels:
+    app: e-commerce
+# Mengatur spesifikasi dari object
+spec:
+  # Menentukan jumlah replica dari Pod yaitu 1
+  replicas: 1
+  # Menggunakan selector untuk mengidentifikasi Pod dengan label tier: shipping
+  selector:
+    matchLabels:
+      tier: shipping
+  # Pod template terdiri dari 2 bagian yaitu metadata dan spec (spesifikasi dari container)
+  template:
+    # Bagian metadata memuat label untuk mengorganisasi object yaitu
+    # key app dengan value e-commerce dan key tier dengan value shipping
+    # yang menjadi bagian dari Service dan Deployment  
+    metadata:
+      labels:
+        app: e-commerce
+        tier: shipping
+    # Bagian spec memuat spesifikasi resource container di dalam Pod
+    spec:
+      # Mengatur nama dari container yaitu shipping-service
+      containers:
+      - name: shipping-service
+        # Mengatur image yang digunakan yaitu shipping-service:latest yang bersumber dari GitHub Packages
+        image: ghcr.io/iputuhariyadi/shipping-service:latest
+        # Menentukan port yang digunakan yaitu 3001
+        ports:
+          - containerPort: 3001

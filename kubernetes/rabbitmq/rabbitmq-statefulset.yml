@@ -1,0 +1,52 @@
+# Mengatur versi Kubernetes API yang digunakan untuk membuat object dari manifest yaitu apps/v1
+apiVersion: apps/v1
+# Mengatur jenis object yang dibuat yaitu StatefulSet
+kind: StatefulSet
+# Mengatur nama dari object StatefulSet yang dibuat yaitu rabbitmq
+# dan label untuk mengorganisasi object yaitu key app dengan value rabbitmq
+metadata:
+  name: rabbitmq
+  labels:
+    app: rabbitmq
+# Mengatur spesifikasi dari object meliputi:
+# menggunakan selector app: rabbitmq dan tier message-broker
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq
+      tier: message-broker
+  # Mengatur nama service yaitu rabbitmq-service
+  serviceName: rabbitmq-service
+  # Menentukan jumlah replica dari Pod yaitu 1
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+        tier: message-broker
+    # Bagian spec memuat spesifikasi resource container di dalam Pod
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      # Mengatur nama dari container yaitu rabbitmq dan image yang digunakan yaitu rabbitmq:3.11-management
+      - image: rabbitmq:3.11-management
+        name: rabbitmq
+        # Mengatur port yang digunakan
+        ports:
+        # Port yang diekspos untuk rabbitmq adalah 5672
+        - containerPort: 5672
+          name: rabbitmq
+        # Port yang diekspos untuk management adalah 15672
+        - containerPort: 15672
+          name: management
+        # Mengatur Volume Mount meliputi:
+        # Persistent Volume dengan mount path /var/lib/rabbitmq
+        volumeMounts:
+        - name: rabbitmq-persistent-volume
+          mountPath: /var/lib/rabbitmq
+      # Mengatur volumes meliputi nama dari rabbitmq Persistent Volume
+      volumes:
+      - name: rabbitmq-persistent-volume
+        persistentVolumeClaim:
+          claimName: rabbitmq-pv-claim

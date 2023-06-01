@@ -1,0 +1,25 @@
+# Mengatur versi Kubernetes API yang digunakan untuk membuat object dari manifest yaitu v1
+apiVersion: v1
+# Mengatur jenis object yang dibuat yaitu Service
+kind: Service
+# Mengatur nama dari object service yang dibuat yaitu rabbitmq-service
+# dan label untuk mengorganisasi object yaitu key app dengan value rabbitmq
+metadata:
+  labels:
+    app: rabbitmq
+  name: rabbitmq-service
+# Mengatur spesifikasi dari object
+spec:
+  ports:
+  # Port yang diekspos untuk rabbitmq adalah 5672
+  - name: rabbitmq
+    port: 5672
+  # Port yang diekspos untuk management adalah 15672
+  - name: management
+    port: 15672
+  # Menggunakan selector app: rabbitmq dan tier message-broker 
+  selector:
+    app: rabbitmq
+    tier: message-broker
+  # Memakai tipe NodePort
+  type: NodePort

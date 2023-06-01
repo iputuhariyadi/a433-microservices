@@ -1,0 +1,39 @@
+# Mengatur versi Kubernetes API yang digunakan untuk membuat object dari manifest yaitu v1
+apiVersion: v1
+# Mengatur jenis object yang dibuat yaitu Persistent Volume
+kind: PersistentVolume
+# Mengatur nama dari object Persistent Volume yang dibuat yaitu rabbitmq-pv-volume
+# dan menentukan tipe volumenya adalah local
+metadata:
+  name: rabbitmq-pv-volume
+  labels:
+    type: local
+# Menentukan spesifikasi meliputi nama dari Storage Class adalah manual,
+# kapasitas penyimpanan 1 GB, access mode dengan read-write once
+# dan host path /mnt/data
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+
+---
+# Mengatur versi Kubernetes API yang digunakan untuk membuat object dari manifest yaitu v1
+apiVersion: v1
+# Mengatur jenis object yang dibuat yaitu Persistent Volume Claim
+kind: PersistentVolumeClaim
+# Mengatur nama dari object Persistent Volume Claim yang dibuat yaitu rabbitmq-pv-claim
+metadata:
+  name: rabbitmq-pv-claim
+# Menentukan spesifikasi meliputi nama dari Storage Class adalah manual,
+# access mode dengan read-write once dan permintaan penyimpanan 1 GB.
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

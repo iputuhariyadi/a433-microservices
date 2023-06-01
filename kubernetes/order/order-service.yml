@@ -1,0 +1,19 @@
+# Mengatur versi Kubernetes API yang digunakan untuk membuat object dari manifest yaitu v1
+apiVersion: v1
+# Mengatur jenis object yang dibuat yaitu Service
+kind: Service
+# Mengatur nama dari object service yang dibuat yaitu order-service
+# dan label untuk mengorganisasi object yaitu key app dengan value e-commerce
+metadata:
+  labels:
+    app: e-commerce
+  name: order-service
+# Mengatur spesifikasi dari object meliputi port yang diekspos adalah 3000,
+# menggunakan selector app: e-commerce dan tier order serta memakai tipe NodePort
+spec:
+  ports:
+  - port: 3000
+  selector:
+    app: e-commerce
+    tier: order
+  type: NodePort

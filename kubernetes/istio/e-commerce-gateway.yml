@@ -1,0 +1,22 @@
+# Mengatur versi API yang digunakan untuk membuat object dari manifest yaitu networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1alpha3
+# Mengatur jenis object yang dibuat yaitu Gateway
+kind: Gateway
+# Mengatur nama dari object Gateway yang dibuat yaitu e-commerce-gateway
+metadata:
+  name: e-commerce-gateway
+# Mengatur spesifikasi dari object  
+spec:
+  # Mengimplementasikan istio default gateway
+  selector:
+    istio: ingressgateway
+  servers:
+  # Membuka port dengan nomor 80 dan mengatur nama port dengan http
+  # serta menggunakan protokol HTTP
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    # Menerima trafik dari semua hosts
+    hosts:
+    - "*"

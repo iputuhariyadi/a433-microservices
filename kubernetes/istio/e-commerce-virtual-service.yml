@@ -1,0 +1,35 @@
+# Mengatur versi API yang digunakan untuk membuat object dari manifest yaitu networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1alpha3
+# Mengatur jenis object yang dibuat yaitu VirtualService
+kind: VirtualService
+# Mengatur nama dari object VirtualService yang dibuat yaitu e-commerce
+metadata:
+  name: e-commerce
+# Mengatur spesifikasi dari object 
+spec:
+  # Mengatur host tujuan kemana trafik dikirim
+  hosts:
+  - "*"
+  # Mengatur nama dari gateway yang diterapkan untuk rute tersebut
+  gateways:
+  - e-commerce-gateway
+  # Mengatur daftar aturan rute untuk trafik HTTP
+  http:
+  # Mencocokkan permintaan /order akan dirutekan ke service order-service pada port 3000
+  - match:
+    - uri:
+        exact: /order
+    route:
+    - destination:
+        host: order-service
+        port:
+          number: 3000
+  # Mencocokkan permintaan /shipping akan dirutekan ke service shipping-service pada port 3001
+  - match:
+    - uri:
+        exact: /shipping
+    route:
+    - destination:
+        host: shipping-service
+        port:
+          number: 3001
